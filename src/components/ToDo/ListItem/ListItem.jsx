@@ -11,6 +11,7 @@ export default function ListItem({
   setMessageType,
   setMessageShow,
   setCongratsShow,
+  db,
 }) {
   const isChecked = task.status === "completed" ? true : false;
 
@@ -22,6 +23,8 @@ export default function ListItem({
     }, 5000);
     setMessageShow(true);
     setMessageType("removeMessage");
+
+    db.collection("tasks").doc({ id: task.id }).delete();
   }
 
   function handleChecked(e) {
@@ -54,6 +57,10 @@ export default function ListItem({
         setCongratsShow(false);
       }, 5000);
       setCongratsShow(true);
+
+      db.collection("tasks")
+        .doc({ id: task.id })
+        .update({ status: "completed" });
     } else {
       setData((prevData) =>
         prevData.map((obj) => {
@@ -79,6 +86,9 @@ export default function ListItem({
           }
         })
       );
+      db.collection("tasks")
+        .doc({ id: task.id })
+        .update({ status: "incomplete" });
     }
   }
 
