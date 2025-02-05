@@ -70,19 +70,23 @@
 
 .congrats {
   position: absolute;
-  top: 90px;
-  left: 570px;
+  top: 20px;
+  left: 1180px;
   text-align: center;
   transition: 40000ms ease all;
 }
 
 .congrats img {
-  width: 400px;
+  width: 300px;
   margin: 0;
 }
 
 .congrats p {
-  font-size: 60px;
+  background-color: #000000a6;
+  border-radius: 50px;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: bold;
   margin: 0;
   color: white;
 }
