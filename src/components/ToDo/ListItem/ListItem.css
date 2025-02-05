@@ -1,0 +1,53 @@
+.taskInfo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  background: rgb(235, 234, 234);
+  cursor: pointer;
+}
+
+.task {
+  color: rgb(91, 91, 91);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 2px 5px;
+}
+
+.moment {
+  color: rgb(121, 121, 121);
+  font-size: 11px;
+  margin: 2px 5px;
+}
+
+.btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  width: 25px;
+  height: 25px;
+  background: rgb(235, 234, 234);
+  appearance: none;
+  border: none;
+  margin: 0 3px;
+  border-radius: 4px;
+  padding: 4px 0 0 0;
+  cursor: pointer;
+  color: rgb(91, 91, 91);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+.lineThrough {
+  text-decoration: line-through;
+  text-decoration-color: #707070;
+}

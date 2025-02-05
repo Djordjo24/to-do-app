@@ -1,0 +1,88 @@
+.toDo {
+  padding: 30px;
+  background-color: #000000a6;
+  border-radius: 10px;
+}
+
+.toDo h1 {
+  color: #ffff;
+  text-align: center;
+  padding: 0 0 20px 0;
+  margin: 0;
+}
+
+.controlPanel {
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+}
+
+.addBtn {
+  background: linear-gradient(90deg, #3a5eef, #5f68eb);
+  color: #ffff;
+  font-size: 13px;
+  padding: 8px 17px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.addBtn:active {
+  transform: scale(0.95);
+}
+
+.select {
+  width: 100px;
+  background-color: #ffffffcf;
+  color: #000000;
+  font-size: 13px;
+  padding: 8px 5px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.taskList {
+  background-color: rgb(235, 234, 234);
+  border-radius: 5px;
+  border: none;
+  padding: 17px;
+}
+
+.taskList ul {
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 15px;
+}
+
+.taskList li {
+  background-color: #ffff;
+  font-size: 13px;
+  list-style: none;
+  padding: 8px 5px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.congrats {
+  position: absolute;
+  top: 90px;
+  left: 570px;
+  text-align: center;
+  transition: 40000ms ease all;
+}
+
+.congrats img {
+  width: 400px;
+  margin: 0;
+}
+
+.congrats p {
+  font-size: 60px;
+  margin: 0;
+  color: white;
+}
