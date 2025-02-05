@@ -1,10 +1,11 @@
 import "./ToDo.css";
 import Modal from "./Modal/Modal.jsx";
 import ListItem from "./ListItem/ListItem.jsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Message from "./Message/Message.jsx";
 import handshake from "../../images/handshake.png";
 import { motion } from "motion/react";
+import Localbase from "localbase";
 
 export default function ToDo() {
   const [modalShow, setModalShow] = useState(false);
@@ -15,6 +16,18 @@ export default function ToDo() {
   const [messageShow, setMessageShow] = useState(false);
   const [messageType, setMessageType] = useState(undefined);
   const [congratsShow, setCongratsShow] = useState(false);
+  let db = useRef(undefined);
+
+  useEffect(() => {
+    db.current = new Localbase("db");
+    db.current
+      .collection("tasks")
+      .get()
+      .then((tasks) => {
+        setOriginalData(tasks);
+        setData(tasks);
+      });
+  }, [db]);
 
   function handleModallAdd() {
     setModalTask(undefined);
@@ -76,6 +89,7 @@ export default function ToDo() {
                   setMessageShow={setMessageShow}
                   setMessageType={setMessageType}
                   setCongratsShow={setCongratsShow}
+                  db={db.current}
                 />
               );
             })}
@@ -92,6 +106,7 @@ export default function ToDo() {
           setMessageShow={setMessageShow}
           setMessageType={setMessageType}
           setCongratsShow={setCongratsShow}
+          db={db.current}
         />
       )}
       {messageShow && <Message messageType={messageType} />}
