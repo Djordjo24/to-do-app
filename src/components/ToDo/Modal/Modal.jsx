@@ -13,6 +13,7 @@ export default function Modal({
   setMessageShow,
   setMessageType,
   setCongratsShow,
+  db,
 }) {
   const [inputValue, setInputValue] = useState(modalTask ? modalTask.task : "");
   const [status, setStatus] = useState(modalTask ? modalTask.status : "");
@@ -27,7 +28,7 @@ export default function Modal({
 
   function handleTask(e) {
     e.preventDefault();
-    if (!inputValue) return;
+    if (!inputValue || !status) return;
     const newTask = {
       id: setMoment(new Date()),
       task: inputValue,
@@ -37,13 +38,17 @@ export default function Modal({
     if (modalType === "add") {
       setData((prevData) => [...prevData, newTask]);
       setOriginalData((prevData) => [...prevData, newTask]);
+
       setTimeout(() => {
         setMessageShow(false);
       }, 5000);
-
       setMessageShow(true);
       setMessageType("addMessage");
+
+      db.collection("tasks").add(newTask);
     } else if (modalType === "edit") {
+      const prevStatus = modalTask.status;
+
       setData((prevData) =>
         prevData.map((obj) => {
           if (obj.id === modalTask.id) {
@@ -62,7 +67,10 @@ export default function Modal({
           }
         })
       );
-      if (modalTask.status === "incomplete") {
+
+      db.collection("tasks").doc({ id: modalTask.id }).update(newTask);
+
+      if (prevStatus !== "completed" && newTask.status === "completed") {
         setTimeout(() => {
           setCongratsShow(false);
         }, 5000);
