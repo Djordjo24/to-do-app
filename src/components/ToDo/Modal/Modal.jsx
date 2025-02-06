@@ -1,17 +1,16 @@
 import "./Modal.css";
 import { useState } from "react";
-import setMoment from "../../../utils/utils.js";
 import { motion } from "motion/react";
+import { setMoment } from "../../../utils/utils.js";
 import { colors } from "../../../style/colors.js";
 
 export default function Modal({
   setData,
-  setOriginalData,
+  modalTask,
   modalType,
   setModalShow,
-  modalTask,
-  setMessageShow,
   setMessageType,
+  setMessageShow,
   setCongratsShow,
   db,
 }) {
@@ -37,28 +36,15 @@ export default function Modal({
     };
     if (modalType === "add") {
       setData((prevData) => [...prevData, newTask]);
-      setOriginalData((prevData) => [...prevData, newTask]);
-
       setTimeout(() => {
         setMessageShow(false);
       }, 5000);
       setMessageShow(true);
       setMessageType("addMessage");
-
       db.collection("tasks").add(newTask);
     } else if (modalType === "edit") {
       const prevStatus = modalTask.status;
-
       setData((prevData) =>
-        prevData.map((obj) => {
-          if (obj.id === modalTask.id) {
-            return newTask;
-          } else {
-            return obj;
-          }
-        })
-      );
-      setOriginalData((prevData) =>
         prevData.map((obj) => {
           if (obj.id === modalTask.id) {
             return newTask;
@@ -69,19 +55,16 @@ export default function Modal({
       );
 
       db.collection("tasks").doc({ id: modalTask.id }).update(newTask);
-
       if (prevStatus !== "completed" && newTask.status === "completed") {
         setTimeout(() => {
           setCongratsShow(false);
         }, 5000);
         setCongratsShow(true);
       }
-
       setTimeout(() => {
         setMessageShow(false);
       }, 5000);
       setMessageShow(true);
-
       setMessageType("editMessage");
     }
     setModalShow(false);
