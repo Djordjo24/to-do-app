@@ -1,6 +1,6 @@
 import "./Message.css";
-import check from "../../../images/check.png";
 import { motion } from "motion/react";
+import check from "../../../images/check.png";
 
 export default function Message({ messageType }) {
   return (
