@@ -1,20 +1,21 @@
 import "./ToDo.css";
-import Modal from "./Modal/Modal.jsx";
-import ListItem from "./ListItem/ListItem.jsx";
-import { useEffect, useRef, useState } from "react";
-import Message from "./Message/Message.jsx";
-import handshake from "../../images/handshake.png";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { motion } from "motion/react";
 import Localbase from "localbase";
+import Modal from "./Modal/Modal.jsx";
+import ListItem from "./ListItem/ListItem.jsx";
+import Message from "./Message/Message.jsx";
+import handshake from "../../images/handshake.png";
+import { filterData } from "../../utils/utils.js";
 
 export default function ToDo() {
-  const [modalShow, setModalShow] = useState(false);
-  const [modalType, setModalType] = useState(undefined);
-  const [modalTask, setModalTask] = useState(undefined);
-  const [originalData, setOriginalData] = useState([]);
   const [data, setData] = useState([]);
-  const [messageShow, setMessageShow] = useState(false);
+  const [modalTask, setModalTask] = useState(undefined);
+  const [taskStatus, setTaskStatus] = useState("all");
+  const [modalType, setModalType] = useState(undefined);
+  const [modalShow, setModalShow] = useState(false);
   const [messageType, setMessageType] = useState(undefined);
+  const [messageShow, setMessageShow] = useState(false);
   const [congratsShow, setCongratsShow] = useState(false);
   let db = useRef(undefined);
 
@@ -24,10 +25,14 @@ export default function ToDo() {
       .collection("tasks")
       .get()
       .then((tasks) => {
-        setOriginalData(tasks);
         setData(tasks);
       });
   }, [db]);
+
+  const filteredData = useMemo(
+    () => filterData(data, taskStatus),
+    [data, taskStatus]
+  );
 
   function handleModallAdd() {
     setModalTask(undefined);
@@ -42,14 +47,7 @@ export default function ToDo() {
   }
 
   function handleFilter(e) {
-    const optionValue = e.target.value;
-    if (optionValue === "incomplete") {
-      setData(originalData.filter((obj) => obj.status === "incomplete"));
-    } else if (optionValue === "completed") {
-      setData(originalData.filter((obj) => obj.status === "completed"));
-    } else {
-      setData(originalData);
-    }
+    setTaskStatus(e.target.value);
   }
 
   const controlPanel = (
@@ -78,16 +76,15 @@ export default function ToDo() {
       ) : (
         <div className="taskList">
           <ul>
-            {data.map((task) => {
+            {filteredData.map((task) => {
               return (
                 <ListItem
                   key={task.id}
                   task={task}
-                  handleModalUpdate={handleModalUpdate}
                   setData={setData}
-                  setOriginalData={setOriginalData}
-                  setMessageShow={setMessageShow}
+                  handleModalUpdate={handleModalUpdate}
                   setMessageType={setMessageType}
+                  setMessageShow={setMessageShow}
                   setCongratsShow={setCongratsShow}
                   db={db.current}
                 />
@@ -98,13 +95,12 @@ export default function ToDo() {
       )}
       {modalShow && (
         <Modal
+          setData={setData}
+          modalTask={modalTask}
           modalType={modalType}
           setModalShow={setModalShow}
-          setData={setData}
-          setOriginalData={setOriginalData}
-          modalTask={modalTask}
-          setMessageShow={setMessageShow}
           setMessageType={setMessageType}
+          setMessageShow={setMessageShow}
           setCongratsShow={setCongratsShow}
           db={db.current}
         />
