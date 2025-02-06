@@ -4,10 +4,9 @@ import { ImPencil } from "react-icons/im";
 import { motion } from "motion/react";
 
 export default function ListItem({
+  setData,
   task,
   handleModalUpdate,
-  setData,
-  setOriginalData,
   setMessageType,
   setMessageShow,
   setCongratsShow,
@@ -17,13 +16,11 @@ export default function ListItem({
 
   function handleRemove() {
     setData((prevData) => prevData.filter((obj) => obj.id !== task.id));
-    setOriginalData((prevData) => prevData.filter((obj) => obj.id !== task.id));
     setTimeout(() => {
       setMessageShow(false);
     }, 5000);
     setMessageShow(true);
     setMessageType("removeMessage");
-
     db.collection("tasks").doc({ id: task.id }).delete();
   }
 
@@ -41,40 +38,15 @@ export default function ListItem({
           }
         })
       );
-      setOriginalData((prevData) =>
-        prevData.map((obj) => {
-          if (obj.id === task.id) {
-            return {
-              ...obj,
-              status: "completed",
-            };
-          } else {
-            return obj;
-          }
-        })
-      );
       setTimeout(() => {
         setCongratsShow(false);
       }, 5000);
       setCongratsShow(true);
-
       db.collection("tasks")
         .doc({ id: task.id })
         .update({ status: "completed" });
     } else {
       setData((prevData) =>
-        prevData.map((obj) => {
-          if (obj.id === task.id) {
-            return {
-              ...obj,
-              status: "incomplete",
-            };
-          } else {
-            return obj;
-          }
-        })
-      );
-      setOriginalData((prevData) =>
         prevData.map((obj) => {
           if (obj.id === task.id) {
             return {
