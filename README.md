@@ -7,7 +7,7 @@ Tech Stack
 
 - React.js
 
-Getting Started Clone the repository: git clone cd
+Getting Started Clone the repository: git clone
 
 Install dependencies: npm install
 
